@@ -13,6 +13,10 @@ zombie_door = randint(1,12)
 print(zombie_door)
 user_input = int(input("Välj tabell (1-12) "))
 
+door_array = []
+for i in range(1,13):
+    door_array.append(i)
+
 random_integer = randint(1,12)
 question_answer = user_input * random_integer
 print(question_answer)
@@ -25,5 +29,4 @@ if question_answer == user_answer:
         print("Du undviker zombiesarna!")
 
 
-def choose_door(number):
-    
+def check_zombie(number):
