@@ -1,8 +1,9 @@
-from random import choice
+from random import choice, randint
 import math
 import operator as op
 
 def create_calculation(table_num, num_array, operator):
+
     operations = {
         "*": op.mul,
         "//": op.floordiv,
@@ -47,13 +48,13 @@ while game_on:
 
     if lose == False:
         num_questions = input_valid_int("Välj antal frågor för detta spelet? ", "Ange ett giltigt svar!", 12, 39)
-        operator_selected = input_valid_str("Välj operator (* (multiplikation), // (heltalsdivision) eller % (modulus)) ", "Ange ett giltigt svar!", ["*", "//", "%"])
+        operator_selected = input_valid_str("Välj operator (* (multiplikation), // (heltalsdivision) eller % (modulus)) eller Random ", "Ange ett giltigt svar!", ["*", "//", "%", "random"])
         if operator_selected == "*":
             user_input = input_valid_int("Välj tabell (2-12) ", "Ange ett giltigt svar!", 1, 12)
-        elif operator_selected == "//":
+        elif operator_selected == "//" or operator_selected == "%":
             user_input = input_valid_int("Välj divisor (2-5) ", "Ange ett giltigt svar!", 2, 5)
         else:
-            user_input = input_valid_int("Välj divisor (2-5) ", "Ange ett giltigt svar!", 2, 5)
+            user_input = 2
     
     door_array = list(range(1, num_questions + 1))
     
@@ -69,8 +70,16 @@ while game_on:
         door_chosen = 0;
         zombie_door = choice(door_array)
         print("Zombie dörr:", zombie_door)
-        question_answer, random_integer, num_array = create_calculation(user_input, num_array, operator_selected)
-        user_answer = input_valid_int(f"Vad är {random_integer} {operator_selected} {user_input}? ", "Ange ett giltigt svar!", 0, math.inf)
+        operator = operator_selected
+        if operator_selected == "random":
+            operator = choice(["*", "//", "%"])
+            if operator == "*":
+                user_input = randint(2, 12)
+            elif operator == "//" or operator == "%":
+                user_input = randint(2, 5)
+            
+        question_answer, random_integer, num_array = create_calculation(user_input, num_array, operator)
+        user_answer = input_valid_int(f"Vad är {random_integer} {operator} {user_input}? ", "Ange ett giltigt svar!", 0, math.inf)
         if user_answer != question_answer:
             print("Fel svar, du blev uppäten av zombies!")
             still_alive = False
